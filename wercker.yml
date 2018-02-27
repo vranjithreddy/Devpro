@@ -40,7 +40,7 @@
          password: $DOCKER_PASSWORD
          # we want to push both the release image and as the latest
          tag: dev-$WERCKER_GIT_COMMIT latest
-         repository: niravparekh/helloworld
+         repository: ranjithraj2035/devpro
          registry: https://hub.docker.com
          ports: 80 443
          cmd: nginx -g 'daemon off';
@@ -49,30 +49,30 @@
    box: node:latest
    steps:
      - wercker/add-ssh-key:
-         keyname: nirav_key
+         keyname: rj_key
      - add-to-known_hosts:
          hostname: $DEV_REMOTE_HOST
      - script:
          name: Pull newest docker images
          code: |
-           ssh $DEV_REMOTE_USER@$DEV_REMOTE_HOST sudo docker pull niravparekh/helloworld
+           ssh $DEV_REMOTE_USER@$DEV_REMOTE_HOST sudo docker pull ranjithraj2035/devpro
      - script:
          name: Stop all running containers
          code: |
-           ssh $DEV_REMOTE_USER@$DEV_REMOTE_HOST sudo docker stop nirav  || echo ‘failed to stop running container’
+           ssh $DEV_REMOTE_USER@$DEV_REMOTE_HOST sudo docker stop rj  || echo ‘failed to stop running container’
      - script:
          name: Remove stopped service/containers
          code: |
-           ssh $DEV_REMOTE_USER@$DEV_REMOTE_HOST sudo docker rm nirav  || echo ‘failed to remove stopped container’
+           ssh $DEV_REMOTE_USER@$DEV_REMOTE_HOST sudo docker rm rj  || echo ‘failed to remove stopped container’
      - script:
          name: Remove image behind stopped container
          code: |
-           ssh $DEV_REMOTE_USER@$DEV_REMOTE_HOST sudo docker rmi niravparekh/helloworld:current || echo ‘failed to remove image behind stopped container’
+           ssh $DEV_REMOTE_USER@$DEV_REMOTE_HOST sudo docker rmi ranjithraj2035/devpro:current || echo ‘failed to remove image behind stopped container’
      - script:
          name: Tag the pulled image
          code: |
-           ssh $DEV_REMOTE_USER@$DEV_REMOTE_HOST sudo docker tag niravparekh/helloworld:latest niravparekh/helloworld:current
+           ssh $DEV_REMOTE_USER@$DEV_REMOTE_HOST sudo docker tag ranjithraj2035/devpro:latest ranjithraj2035/devpro:current
      - script:
          name: Start all services/containers
          code: |
-           ssh $DEV_REMOTE_USER@$DEV_REMOTE_HOST sudo docker container run --detach -p 91:80 --name nirav niravparekh/helloworld:current
+           ssh $DEV_REMOTE_USER@$DEV_REMOTE_HOST sudo docker container run --detach -p 91:80 --name nirav ranjithraj2035/devpro:current
